@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dumpvo2d3hdro"]
 
+[ext_resource type="Script" uid="uid://xr07imqsxw70" path="res://scenes/world/world.gd" id="1_1fp7r"]
 [ext_resource type="Texture2D" uid="uid://r8c1mr31dunb" path="res://assets/textures/backgrounds/map-background.png" id="1_dphjl"]
 [ext_resource type="PackedScene" uid="uid://c6wadhpdu25p3" path="res://scenes/player/player.tscn" id="2_sl2e5"]
 
@@ -10,6 +11,7 @@ size = Vector2(10, 270)
 size = Vector2(360, 10)
 
 [node name="World" type="Node2D" unique_id=855640128]
+script = ExtResource("1_1fp7r")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1433629534]
 texture = ExtResource("1_dphjl")
@@ -57,3 +59,16 @@ metadata/_edit_lock_ = true
 position = Vector2(170, -5)
 shape = SubResource("RectangleShape2D_yf5fn")
 metadata/_edit_lock_ = true
+
+[node name="StaminaLabel" type="Label" parent="." unique_id=1827691286]
+offset_left = 5.0
+offset_top = 10.0
+offset_right = 45.0
+offset_bottom = 33.0
+text = "Stamina"
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1534918568]
+offset_left = 5.0
+offset_top = 30.0
+offset_right = 105.0
+offset_bottom = 57.0

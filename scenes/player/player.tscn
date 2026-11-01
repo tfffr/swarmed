@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://br0qomffj2iru" path="res://assets/textures/characters/player-body.png" id="1_dovo2"]
 [ext_resource type="Script" uid="uid://bp253lamlxctj" path="res://scenes/player/player.gd" id="1_gmlin"]
 [ext_resource type="Texture2D" uid="uid://c4bff3qak6sv1" path="res://assets/textures/characters/shadow.png" id="2_gmlin"]
+[ext_resource type="PackedScene" uid="uid://dtf45e2m7n57o" path="res://scenes/weapon/weapon.tscn" id="4_lvxji"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yf5fn"]
 radius = 2.0
@@ -23,9 +24,25 @@ tracks/0/keys = {
 "values": [0]
 }
 
-[sub_resource type="Animation" id="Animation_lvxji"]
-resource_name = "move"
-length = 0.39999999999999997
+[sub_resource type="Animation" id="Animation_p47bc"]
+resource_name = "hurt"
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteBody:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 0, 2, 0, 2, 0]
+}
+
+[sub_resource type="Animation" id="Animation_75vfm"]
+resource_name = "idle"
+length = 0.1
 loop_mode = 1
 step = 0.2
 tracks/0/type = "value"
@@ -35,7 +52,25 @@ tracks/0/path = NodePath("SpriteBody:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_lvxji"]
+resource_name = "move"
+length = 0.3
+loop_mode = 1
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteBody:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.14285715),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [0, 1]
@@ -44,6 +79,8 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p47bc"]
 _data = {
 &"RESET": SubResource("Animation_gmlin"),
+&"hurt": SubResource("Animation_p47bc"),
+&"idle": SubResource("Animation_75vfm"),
 &"move": SubResource("Animation_lvxji")
 }
 
@@ -61,6 +98,12 @@ centered = false
 offset = Vector2(-8, -16)
 hframes = 3
 
+[node name="WeaponPivot" type="Node2D" parent="SpriteBody" unique_id=1900277538]
+position = Vector2(1, -3)
+
+[node name="Weapon" parent="SpriteBody/WeaponPivot" unique_id=52502578 instance=ExtResource("4_lvxji")]
+position = Vector2(4, 0)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=301340989]
 position = Vector2(-1, -2)
 rotation = 1.5707964
@@ -68,3 +111,4 @@ shape = SubResource("CapsuleShape2D_yf5fn")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1254045061]
 libraries/ = SubResource("AnimationLibrary_p47bc")
+autoplay = &"idle"

@@ -1,57 +1,110 @@
 class_name Player
 extends CharacterBody2D
 
-@export var speed := 120
+@export var normal_speed := 60
+@export var max_speed := 120
+@export var max_stamina := 100.
 
-enum PlayerState {Idle, Moving}
+enum PlayerState {Idle, Moving, Shooting}
 
 @onready var sprite_body: Sprite2D = $SpriteBody
 @onready var sprite_shadow: Sprite2D = $SpriteShadow
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var weapon: Weapon = $SpriteBody/WeaponPivot/Weapon
+@onready var weapon_pivot: Node2D = $SpriteBody/WeaponPivot
 
 var current_state := PlayerState.Idle
+var current_speed := normal_speed
+var current_stamina := max_stamina
 
 
-func _physics_process(delta: float) -> void:
-	if Input.is_anything_pressed():
-		_move(delta)
-	else:
-		_idle()
+func _physics_process(_delta: float) -> void:
+	var direction := Input.get_vector(
+		"move_left", "move_right", "move_up", "move_down"
+	)
+	_choose_state(direction)
+	_choose_flip()
+	_aim_at(get_global_mouse_position())
+	velocity = direction * current_speed
 	move_and_slide()
+
+
+func _aim_at(target: Vector2) -> void:
+	var weapon_direction := weapon_pivot.global_position.direction_to(target)
+	weapon_pivot.rotation = weapon_direction.angle()
+
+
+func _choose_state(direction: Vector2) -> void:
+	if direction == Vector2.ZERO:
+		_idle()
+	else:
+		_move()
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		_shoot()
 
 
 func _idle() -> void:
 	current_state = PlayerState.Idle
-	animation_player.stop()
+	animation_player.play("idle")
 
 
-func _move(delta) -> void:
+func _move() -> void:
 	current_state = PlayerState.Moving
+	if Input.is_action_pressed("sprint"):
+		_sprint()
+	else:
+		_walk()
 	animation_player.play("move")
-	change_position(delta)
 
 
-func change_position(delta) -> void:
-	if Input.is_action_pressed("move_down"):
-		position.y += speed * delta
-	if Input.is_action_pressed("move_up"):
-		position.y -= speed * delta
-	if Input.is_action_pressed("move_left"):
-		_go_left(delta)
-	if Input.is_action_pressed("move_right"):
-		_go_right(delta)
+func _sprint() -> void:
+	current_speed = max_speed
+	_decrease_stamina()
+	if current_stamina == 0:
+		current_speed = normal_speed
 
 
-func _go_left(delta) -> void:
+func _walk() -> void:
+	current_speed = normal_speed
+	_increase_stamina()
+
+
+func _decrease_stamina() -> void:
+	current_stamina -= 1
+	if current_stamina < 0:
+		current_stamina = 0
+
+
+func _increase_stamina() -> void:
+	current_stamina += 1
+	if current_stamina > max_stamina:
+		current_stamina = max_stamina
+
+
+func _shoot() -> void:
+	current_state = PlayerState.Shooting
+	weapon.animation_player.play("shoot")
+	
+
+func _choose_flip() -> void:
+	if get_global_mouse_position().x < position.x:
+		_flip_left()
+	else:
+		_flip_right()
+
+
+func _flip_left() -> void:
 	sprite_body.flip_h = true
+	weapon_pivot.scale.y = -1.
+	weapon.position.x = 6.
 	sprite_shadow.position.x = 2.
 	collision_shape_2d.position.x = 1.
-	position.x -= speed * delta
 
 
-func _go_right(delta) -> void:
+func _flip_right() -> void:
 	sprite_body.flip_h = false
+	weapon_pivot.scale.y = 1.
+	weapon.position.x = 4.
 	sprite_shadow.position.x = 0.
 	collision_shape_2d.position.x = -1.
-	position.x += speed * delta
