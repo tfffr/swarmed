@@ -1,11 +1,14 @@
 class_name Player
 extends CharacterBody2D
 
+const BULLET_BLUEPRINT := preload("res://scenes/bullet/bullet.tscn")
+
+enum PlayerState {Idle, Moving, Shooting}
+
 @export var normal_speed := 60
 @export var max_speed := 120
 @export var max_stamina := 100.
-
-enum PlayerState {Idle, Moving, Shooting}
+@export var fire_rate := 3.
 
 @onready var sprite_body: Sprite2D = $SpriteBody
 @onready var sprite_shadow: Sprite2D = $SpriteShadow
@@ -13,11 +16,21 @@ enum PlayerState {Idle, Moving, Shooting}
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var weapon: Weapon = $SpriteBody/WeaponPivot/Weapon
 @onready var weapon_pivot: Node2D = $SpriteBody/WeaponPivot
+@onready var shot_timer: Timer = $ShotTimer
+@onready var bullet_spawn_location: Node2D = $SpriteBody/WeaponPivot/Weapon/BulletSpawnLocation
 
 var current_state := PlayerState.Idle
 var current_speed := normal_speed
 var current_stamina := max_stamina
 
+
+func _ready() -> void:
+	_set_fire_rate()
+
+
+func _set_fire_rate() -> void:
+	shot_timer.start(1. / fire_rate)
+	
 
 func _physics_process(_delta: float) -> void:
 	var direction := Input.get_vector(
@@ -40,8 +53,8 @@ func _choose_state(direction: Vector2) -> void:
 		_idle()
 	else:
 		_move()
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		_shoot()
+	#if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		#_shoot()
 
 
 func _idle() -> void:
@@ -85,7 +98,11 @@ func _increase_stamina() -> void:
 func _shoot() -> void:
 	current_state = PlayerState.Shooting
 	weapon.animation_player.play("shoot")
-	
+	var bullet: Bullet = BULLET_BLUEPRINT.instantiate()
+	bullet.position = bullet_spawn_location.position
+	bullet.rotation = weapon_pivot.rotation
+	add_child(bullet)
+
 
 func _choose_flip() -> void:
 	if get_global_mouse_position().x < position.x:
@@ -108,3 +125,7 @@ func _flip_right() -> void:
 	weapon.position.x = 4.
 	sprite_shadow.position.x = 0.
 	collision_shape_2d.position.x = -1.
+
+
+func _on_shot_timer_timeout() -> void:
+	_shoot()

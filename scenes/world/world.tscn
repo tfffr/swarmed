@@ -60,15 +60,17 @@ position = Vector2(170, -5)
 shape = SubResource("RectangleShape2D_yf5fn")
 metadata/_edit_lock_ = true
 
-[node name="StaminaLabel" type="Label" parent="." unique_id=1827691286]
-offset_left = 5.0
-offset_top = 10.0
-offset_right = 45.0
-offset_bottom = 33.0
-text = "Stamina"
-
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=1534918568]
 offset_left = 5.0
-offset_top = 30.0
+offset_top = 257.0
 offset_right = 105.0
-offset_bottom = 57.0
+offset_bottom = 270.0
+theme_override_font_sizes/font_size = 6
+
+[node name="StaminaLabel" type="Label" parent="." unique_id=1827691286]
+offset_left = 6.0
+offset_top = 259.0
+offset_right = 33.0
+offset_bottom = 270.0
+theme_override_font_sizes/font_size = 6
+text = "Stamina"
