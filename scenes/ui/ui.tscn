@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cm44fr4v3gt3l"]
+
+[node name="UI" type="Control" unique_id=187529859]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1489210608]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 197.0
+offset_right = 104.0
+offset_bottom = 210.0
+theme_override_font_sizes/font_size = 6
+
+[node name="StaminaLabel" type="Label" parent="." unique_id=1197284084]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 198.0
+offset_right = 34.0
+offset_bottom = 209.0
+theme_override_font_sizes/font_size = 6
+text = "Stamina"

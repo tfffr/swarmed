@@ -1,9 +1,12 @@
 class_name Player
 extends CharacterBody2D
 
-const BULLET_BLUEPRINT := preload("res://scenes/bullet/bullet.tscn")
-
 enum PlayerState {Idle, Moving, Shooting}
+
+signal shot(
+	bullet_global_position: Vector2,
+	bullet_global_rotation: float,
+)
 
 @export var normal_speed := 60
 @export var max_speed := 120
@@ -53,8 +56,6 @@ func _choose_state(direction: Vector2) -> void:
 		_idle()
 	else:
 		_move()
-	#if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		#_shoot()
 
 
 func _idle() -> void:
@@ -98,10 +99,10 @@ func _increase_stamina() -> void:
 func _shoot() -> void:
 	current_state = PlayerState.Shooting
 	weapon.animation_player.play("shoot")
-	var bullet: Bullet = BULLET_BLUEPRINT.instantiate()
-	bullet.position = bullet_spawn_location.position
-	bullet.rotation = weapon_pivot.rotation
-	add_child(bullet)
+	shot.emit(
+		bullet_spawn_location.global_position,
+		bullet_spawn_location.global_rotation
+	)
 
 
 func _choose_flip() -> void:

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://xr07imqsxw70" path="res://scenes/world/world.gd" id="1_1fp7r"]
 [ext_resource type="Texture2D" uid="uid://r8c1mr31dunb" path="res://assets/textures/backgrounds/map-background.png" id="1_dphjl"]
 [ext_resource type="PackedScene" uid="uid://c6wadhpdu25p3" path="res://scenes/player/player.tscn" id="2_sl2e5"]
+[ext_resource type="PackedScene" uid="uid://cm44fr4v3gt3l" path="res://scenes/ui/ui.tscn" id="4_6m72w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
 size = Vector2(10, 270)
@@ -26,6 +27,7 @@ metadata/_edit_lock_ = true
 
 [node name="LeftWall" type="StaticBody2D" parent="Walls" unique_id=1339679806]
 position = Vector2(5, 0)
+collision_mask = 0
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall" unique_id=777337333]
@@ -35,6 +37,7 @@ metadata/_edit_lock_ = true
 
 [node name="RightWall" type="StaticBody2D" parent="Walls" unique_id=1211929259]
 position = Vector2(335, 0)
+collision_mask = 0
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall" unique_id=849883697]
@@ -44,6 +47,7 @@ metadata/_edit_lock_ = true
 
 [node name="TopWall" type="StaticBody2D" parent="Walls" unique_id=495462738]
 position = Vector2(0, 10)
+collision_mask = 0
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall" unique_id=572189389]
@@ -53,6 +57,7 @@ metadata/_edit_lock_ = true
 
 [node name="BottomWall" type="StaticBody2D" parent="Walls" unique_id=2018295373]
 position = Vector2(0, 280)
+collision_mask = 0
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall" unique_id=1308019541]
@@ -60,17 +65,8 @@ position = Vector2(170, -5)
 shape = SubResource("RectangleShape2D_yf5fn")
 metadata/_edit_lock_ = true
 
-[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1534918568]
-offset_left = 5.0
-offset_top = 257.0
-offset_right = 105.0
-offset_bottom = 270.0
-theme_override_font_sizes/font_size = 6
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=270330083]
 
-[node name="StaminaLabel" type="Label" parent="." unique_id=1827691286]
-offset_left = 6.0
-offset_top = 259.0
-offset_right = 33.0
-offset_bottom = 270.0
-theme_override_font_sizes/font_size = 6
-text = "Stamina"
+[node name="UI" parent="CanvasLayer" unique_id=187529859 instance=ExtResource("4_6m72w")]
+
+[connection signal="shot" from="Player" to="." method="_on_player_shot"]

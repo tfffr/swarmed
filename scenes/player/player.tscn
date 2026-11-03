@@ -122,4 +122,10 @@ autoplay = &"idle"
 [node name="ShotTimer" type="Timer" parent="." unique_id=1432689262]
 autostart = true
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1357255631]
+limit_left = 0
+limit_top = 0
+limit_right = 340
+limit_bottom = 270
+
 [connection signal="timeout" from="ShotTimer" to="." method="_on_shot_timer_timeout"]

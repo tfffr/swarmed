@@ -1,5 +1,14 @@
 class_name Bullet
 extends AnimatableBody2D
 
-func _process(delta: float) -> void:
-	position.x += 1.
+@export var speed := 300.
+
+
+func _physics_process(delta: float) -> void:
+	var direction := Vector2.from_angle(global_rotation)
+	var velocity := direction * speed
+	move_and_collide(velocity * delta)
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	queue_free()
