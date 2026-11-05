@@ -2,6 +2,7 @@ class_name Bullet
 extends AnimatableBody2D
 
 @export var speed := 300.
+@export var damage := 1
 
 
 func _physics_process(delta: float) -> void:

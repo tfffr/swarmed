@@ -6,12 +6,15 @@ enum PlayerState {Idle, Moving, Shooting}
 signal shot(
 	bullet_global_position: Vector2,
 	bullet_global_rotation: float,
+	bullet_damage: int,
 )
 
 @export var normal_speed := 60
 @export var max_speed := 120
 @export var max_stamina := 100.
 @export var fire_rate := 3.
+@export var min_damage := 1
+@export var max_damage := 3
 
 @onready var sprite_body: Sprite2D = $SpriteBody
 @onready var sprite_shadow: Sprite2D = $SpriteShadow
@@ -99,10 +102,16 @@ func _increase_stamina() -> void:
 func _shoot() -> void:
 	current_state = PlayerState.Shooting
 	weapon.animation_player.play("shoot")
+	var damage := randi_range(min_damage, max_damage)
 	shot.emit(
 		bullet_spawn_location.global_position,
-		bullet_spawn_location.global_rotation
+		bullet_spawn_location.global_rotation,
+		damage
 	)
+
+
+func _on_shot_timer_timeout() -> void:
+	_shoot()
 
 
 func _choose_flip() -> void:
@@ -126,7 +135,3 @@ func _flip_right() -> void:
 	weapon.position.x = 4.
 	sprite_shadow.position.x = 0.
 	collision_shape_2d.position.x = -1.
-
-
-func _on_shot_timer_timeout() -> void:
-	_shoot()
