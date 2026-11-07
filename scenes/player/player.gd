@@ -23,7 +23,9 @@ signal shot(
 @onready var weapon: Weapon = $SpriteBody/WeaponPivot/Weapon
 @onready var weapon_pivot: Node2D = $SpriteBody/WeaponPivot
 @onready var shot_timer: Timer = $ShotTimer
-@onready var bullet_spawn_location: Node2D = $SpriteBody/WeaponPivot/Weapon/BulletSpawnLocation
+@onready var bullet_spawn_location: Node2D = (
+	$SpriteBody/WeaponPivot/Weapon/BulletSpawnLocation
+)
 
 var current_state := PlayerState.Idle
 var current_speed := normal_speed
