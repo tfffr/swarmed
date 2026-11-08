@@ -137,3 +137,8 @@ func _flip_right() -> void:
 	weapon.position.x = 4.
 	sprite_shadow.position.x = 0.
 	collision_shape_2d.position.x = -1.
+
+
+func get_random_spawn_position() -> Vector2:
+	var random_angle := randf_range(0., TAU) # TAU = 2 * PI
+	return position + Vector2.from_angle(random_angle) * 200.

@@ -6,13 +6,28 @@ const DAMAGE_LABEL_INDICATOR_BLUEPRINT := preload(
 	"res://scenes/damage_label_indicator/damage_label_indicator.tscn"
 )
 const EXPLOSION_BLUEPRINT := preload("res://scenes/explosion/explosion.tscn")
+const ENEMY_BLUEPRINT := preload("res://scenes/enemy/enemy.tscn")
 
 @onready var player: Player = $Player
 @onready var stamina_bar: Control = $CanvasLayer/UI/ProgressBar
 
 
+func _ready() -> void:
+	_spawn_enemies()
+
+
 func _physics_process(_delta: float) -> void:
 	stamina_bar.value = player.current_stamina
+
+
+func _spawn_enemies() -> void:
+	for i in 20:
+		var enemy: Enemy = ENEMY_BLUEPRINT.instantiate()
+		enemy.damage_received.connect(_on_enemy_damage_received)
+		enemy.splash_damage.connect(_on_enemy_splash_damage)
+		enemy.player = player
+		enemy.global_position = player.get_random_spawn_position()
+		add_child(enemy)
 
 
 func _on_player_shot(

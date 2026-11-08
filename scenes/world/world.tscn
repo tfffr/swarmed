@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://r8c1mr31dunb" path="res://assets/textures/backgrounds/map-background.png" id="1_dphjl"]
 [ext_resource type="PackedScene" uid="uid://c6wadhpdu25p3" path="res://scenes/player/player.tscn" id="2_sl2e5"]
 [ext_resource type="PackedScene" uid="uid://cm44fr4v3gt3l" path="res://scenes/ui/ui.tscn" id="4_6m72w"]
-[ext_resource type="PackedScene" uid="uid://dl7nv6iulnkd8" path="res://scenes/enemy/enemy.tscn" id="5_v5dby"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
 size = Vector2(10, 270)
@@ -72,22 +71,9 @@ metadata/_edit_lock_ = true
 
 [node name="UI" parent="CanvasLayer" unique_id=187529859 instance=ExtResource("4_6m72w")]
 
-[node name="Enemy" parent="." unique_id=1470145391 node_paths=PackedStringArray("player") instance=ExtResource("5_v5dby")]
-position = Vector2(96, 94)
-player = NodePath("../Player")
-
-[node name="Enemy2" parent="." unique_id=907875513 node_paths=PackedStringArray("player") instance=ExtResource("5_v5dby")]
-position = Vector2(116, 95)
-player = NodePath("../Player")
-
-[node name="Enemy3" parent="." unique_id=136218584 node_paths=PackedStringArray("player") instance=ExtResource("5_v5dby")]
-position = Vector2(137, 95)
-player = NodePath("../Player")
+[node name="SpawnTimer" type="Timer" parent="." unique_id=820469989]
+wait_time = 7.0
+autostart = true
 
 [connection signal="shot" from="Player" to="." method="_on_player_shot"]
-[connection signal="damage_received" from="Enemy" to="." method="_on_enemy_damage_received"]
-[connection signal="splash_damage" from="Enemy" to="." method="_on_enemy_splash_damage"]
-[connection signal="damage_received" from="Enemy2" to="." method="_on_enemy_damage_received"]
-[connection signal="splash_damage" from="Enemy2" to="." method="_on_enemy_splash_damage"]
-[connection signal="damage_received" from="Enemy3" to="." method="_on_enemy_damage_received"]
-[connection signal="splash_damage" from="Enemy3" to="." method="_on_enemy_splash_damage"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_spawn_enemies"]
