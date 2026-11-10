@@ -4,11 +4,12 @@ extends CharacterBody2D
 enum EnemyState {Walking, Hurting, Dying}
 
 signal damage_received(damage_global_position: Vector2, damage: int)
-signal splash_damage(enemy_global_position: Vector2, amount: int)
+signal splash_damage(enemy_global_position: Vector2, amount: int, reward_type: Coin.CoinType)
 
 @export var player: Player = null
 @export var speed: float = 10.
 @export var max_health: int = 15
+@export var reward := Coin.CoinType.Bronze
 
 @onready var timer: Timer = $Timer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -76,6 +77,6 @@ func _die(extra_damage: int) -> void:
 	if current_health == 0:
 		current_state = EnemyState.Dying
 		extra_damage /= 2
-		splash_damage.emit(global_position, extra_damage)
+		splash_damage.emit(global_position, extra_damage, reward)
 		animation_player.stop()
 		queue_free()

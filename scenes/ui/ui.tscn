@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://cm44fr4v3gt3l"]
 
+[ext_resource type="FontFile" uid="uid://di8cfisxjfcj7" path="res://assets/fonts/my 3x5 tiny mono pixel font.ttf" id="1_u7n8c"]
+
 [node name="UI" type="Control" unique_id=187529859]
 layout_mode = 3
 anchors_preset = 15
@@ -14,13 +16,25 @@ offset_left = 4.0
 offset_top = 197.0
 offset_right = 104.0
 offset_bottom = 210.0
+theme_override_fonts/font = ExtResource("1_u7n8c")
 theme_override_font_sizes/font_size = 6
 
 [node name="StaminaLabel" type="Label" parent="." unique_id=1197284084]
 layout_mode = 0
 offset_left = 7.0
-offset_top = 198.0
-offset_right = 34.0
+offset_top = 201.0
+offset_right = 35.0
 offset_bottom = 209.0
+theme_override_fonts/font = ExtResource("1_u7n8c")
 theme_override_font_sizes/font_size = 6
 text = "Stamina"
+
+[node name="CoinsLabel" type="Label" parent="." unique_id=746140414]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = 57.0
+offset_bottom = 26.0
+theme_override_fonts/font = ExtResource("1_u7n8c")
+theme_override_font_sizes/font_size = 10
+text = "Coins: 0"

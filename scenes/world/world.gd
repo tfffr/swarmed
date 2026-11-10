@@ -7,9 +7,11 @@ const DAMAGE_LABEL_INDICATOR_BLUEPRINT := preload(
 )
 const EXPLOSION_BLUEPRINT := preload("res://scenes/explosion/explosion.tscn")
 const ENEMY_BLUEPRINT := preload("res://scenes/enemy/enemy.tscn")
+const COIN_BLUEPRINT := preload("res://scenes/coin/coin.tscn")
 
 @onready var player: Player = $Player
 @onready var stamina_bar: Control = $CanvasLayer/UI/ProgressBar
+@onready var coins_label: Control = $CanvasLayer/UI/CoinsLabel
 
 
 func _ready() -> void:
@@ -18,6 +20,7 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	stamina_bar.value = player.current_stamina
+	coins_label.text = "Coins: " + str(player.coins_collected)
 
 
 func _spawn_enemies() -> void:
@@ -53,8 +56,14 @@ func _on_enemy_damage_received(
 	damage_label_indicator.set_damage(damage)
 
 
-func _on_enemy_splash_damage(enemy_position: Vector2, amount: int) -> void:
+func _on_enemy_splash_damage(
+	enemy_position: Vector2, amount: int, reward_type: Coin.CoinType
+) -> void:
 	var explosion: Explosion = EXPLOSION_BLUEPRINT.instantiate()
 	explosion.splash_damage = amount
 	explosion.global_position = enemy_position
 	add_child.call_deferred(explosion)
+	var coin: Coin = COIN_BLUEPRINT.instantiate()
+	coin.type = reward_type
+	coin.global_position = enemy_position
+	add_child.call_deferred(coin)

@@ -15,6 +15,7 @@ signal shot(
 @export var fire_rate := 3.
 @export var min_damage := 1
 @export var max_damage := 3
+@export var coins_collected := 0
 
 @onready var sprite_body: Sprite2D = $SpriteBody
 @onready var sprite_shadow: Sprite2D = $SpriteShadow
@@ -137,6 +138,10 @@ func _flip_right() -> void:
 	weapon.position.x = 4.
 	sprite_shadow.position.x = 0.
 	collision_shape_2d.position.x = -1.
+
+
+func add_coins(amount: int) -> void:
+	coins_collected += amount
 
 
 func get_random_spawn_position() -> Vector2:
